@@ -1,0 +1,5 @@
+mysqlclient==2.1.0
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+kubernetes
