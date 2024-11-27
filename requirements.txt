@@ -1,3 +1,4 @@
+python==3.9
 mysqlclient==2.1.0
 djangorestframework
 djangorestframework-simplejwt
