@@ -8,7 +8,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
     User.objects.create_superuser('admin', 'admin@ma.ma', 'admin')
+
+
+if not User.objects.filter(username='user').exists():
     User.objects.create_user('user', 'user@ma.ma', 'user')
+
+
+if not User.objects.filter(username='haitham.bensaghir').exists():
+    User.objects.create_user('haitham.bensaghir', 'haitham.bensaghir@um6p.ma', 'haitham.bensaghir')
+
 EOF
 
 
