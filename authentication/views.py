@@ -1,14 +1,14 @@
 import os
 from .serializers import UserSerializer
 from rest_framework import status
-# from django.core.mail import send_mail
-# from backend.settings import FRONTEND_URL, EMAIL_HOST_USER
+from django.core.mail import send_mail
+from backend.settings import FRONTEND_URL, EMAIL_HOST_USER
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
-# from django.contrib.auth.tokens import default_token_generator
-# from django.utils.encoding import force_bytes
-# from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -86,68 +86,68 @@ def signout(request):
 
 
 
-# @api_view(['POST'])
-# def forget_password(request):
-# 	"""
-#     Endpoint to initiate password reset process by sending an email to the user.
-#     """
+@api_view(['POST'])
+def forget_password(request):
+	"""
+    Endpoint to initiate password reset process by sending an email to the user.
+    """
 
-# 	username = request.data.get('username', None)
-# 	try:
-# 		user = User.objects.get(username=username)
-# 		uid = urlsafe_base64_encode(force_bytes(user.pk))
-# 		token = default_token_generator.make_token(user)
-# 		reset_password_url = f"{FRONTEND_URL}/reset-password/{uid}/{token}/"
+	username = request.data.get('username', None)
+	try:
+		user = User.objects.get(username=username)
+		uid = urlsafe_base64_encode(force_bytes(user.pk))
+		token = default_token_generator.make_token(user)
+		reset_password_url = f"{FRONTEND_URL}/reset-password/{uid}/{token}/"
 
-# 		subject = "Password Reset"
-# 		message = f"Hello,\n\nYou recently requested to reset your password for your account. " \
-# 					f"Please click the link below to reset it:\n\n{reset_password_url}\n\n" \
-# 					f"If you did not request a password reset, please ignore this email or contact support.\n\n" \
-# 					f"Thank you!"
+		subject = "Password Reset"
+		message = f"Hello,\n\nYou recently requested to reset your password for your account. " \
+					f"Please click the link below to reset it:\n\n{reset_password_url}\n\n" \
+					f"If you did not request a password reset, please ignore this email or contact support.\n\n" \
+					f"Thank you!"
 		
-# 		send_mail(subject, message, EMAIL_HOST_USER, [user.email])
+		send_mail(subject, message, EMAIL_HOST_USER, [user.email])
 
-# 		return Response( {
-# 				"message": "Password reset instructions sent successfully."
-# 			},
-# 			status=status.HTTP_200_OK
-# 		)
-# 	except User.DoesNotExist:
-# 		return Response( {
-# 				"message": "No user found with this username."
-# 			},
-# 			status=status.HTTP_404_NOT_FOUND
-# 		)
+		return Response( {
+				"message": "Password reset instructions sent successfully."
+			},
+			status=status.HTTP_200_OK
+		)
+	except User.DoesNotExist:
+		return Response( {
+				"message": "No user found with this username."
+			},
+			status=status.HTTP_404_NOT_FOUND
+		)
 
 
 
-# @api_view(['POST'])
-# def reset_password(request, uidb64, token):
-# 	"""
-# 	Endpoint to reset user's password using a reset token.
-# 	"""
+@api_view(['POST'])
+def reset_password(request, uidb64, token):
+	"""
+	Endpoint to reset user's password using a reset token.
+	"""
 
-# 	try:
-# 		uid = urlsafe_base64_decode(uidb64).decode()
-# 		password = request.data.get('password')
-# 		user = User.objects.get(pk=uid)
-# 	except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-# 		user = None
+	try:
+		uid = urlsafe_base64_decode(uidb64).decode()
+		password = request.data.get('password')
+		user = User.objects.get(pk=uid)
+	except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+		user = None
 
-# 	if user and default_token_generator.check_token(user, token) and password:
-# 		user.set_password(password)
-# 		user.save()
-# 		return Response( {
-# 				"message": "Password reset successfully"
-# 			},
-# 			status=status.HTTP_200_OK
-# 		)
-# 	else:
-# 		return Response( {
-# 				"message": "Invalid reset link"
-# 			},
-# 			status=status.HTTP_400_BAD_REQUEST
-# 		)
+	if user and default_token_generator.check_token(user, token) and password:
+		user.set_password(password)
+		user.save()
+		return Response( {
+				"message": "Password reset successfully"
+			},
+			status=status.HTTP_200_OK
+		)
+	else:
+		return Response( {
+				"message": "Invalid reset link"
+			},
+			status=status.HTTP_400_BAD_REQUEST
+		)
 
 
 
